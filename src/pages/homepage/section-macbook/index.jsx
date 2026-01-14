@@ -131,7 +131,11 @@ function MacModel({
   keyboardRef,
   screenFrameRef,
 }) {
-  const { nodes, materials } = useGLTF("/mac-draco.glb");
+
+// In section-macbook/index.jsx:
+const gltfPath = process.env.NODE_ENV === 'production' ? '/js-hub/mac-draco.glb' : '/mac-draco.glb';
+const { nodes, materials } = useGLTF(gltfPath);
+  // const { nodes, materials } = useGLTF("/mac-draco.glb");
   useEffect(() => {
     // if (nodes) {
     //   const screenFlip = nodes["screenflip"];
