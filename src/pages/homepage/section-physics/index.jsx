@@ -1,7 +1,7 @@
 import "./index.sass";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
@@ -15,10 +15,35 @@ import sassLogo from "../../../assets/texture/sass.jpg";
 import typescriptLogo from "../../../assets/texture/typescript.jpg";
 import astroLogo from "../../../assets/texture/astro.jpg";
 import nestjsLogo from "../../../assets/texture/nestjs.jpg";
-function PhysicsSection() {
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+function PhysicsSection({ physics, showPhysics }) {
+  const physicsRef = useRef(null);
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const t2 = gsap.timeline({
+      scrollTrigger: {
+        trigger: physicsRef.current,
+        start: "bottom bottom",
+        end: "bottom bottom",
+        // markers: true,
+        scrub: 1.2,
+        onEnter: () => {
+          showPhysics(true);
+        },
+        onLeave: () => {
+          showPhysics(false);
+        },
+        once: true,
+      },
+    });
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
   return (
-    <div className="physics-container">
-      <div className="physics-canvas">
+    <div ref={physicsRef} className="physics-container">
+      {physics && (
         <Canvas frameloop="demand">
           <Physics>
             <Attractor />
@@ -69,7 +94,7 @@ function PhysicsSection() {
           <Light x={-4} y={-4} z={2} />
           <Light x={0} y={0} z={5} />
         </Canvas>
-      </div>
+      )}
     </div>
   );
 }
@@ -85,6 +110,7 @@ function Light({ x, y, z }) {
   );
 }
 function PhysicsBox({ position, rad, texture }) {
+  // console.log(position, rad, texture);
   const rigidBody = useRef();
   const vec = useMemo(() => new Vector3(), []);
   const jsTexture = texture ? useTexture(texture) : null;
