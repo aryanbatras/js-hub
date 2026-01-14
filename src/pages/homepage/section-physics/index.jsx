@@ -5,7 +5,16 @@ import { useRef, useMemo } from "react";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
-
+import jsLogo from "../../../assets/js.png"
+import reactLogo from "../../../assets/texture/react.jpg"
+import viteLogo from "../../../assets/texture/vite.jpg"
+import nextLogo from "../../../assets/texture/next.jpg"
+import reduxLogo from "../../../assets/texture/redux.jpg"
+import tailwindLogo from "../../../assets/texture/tailwind.jpg"
+import sassLogo from "../../../assets/texture/sass.jpg"
+import typescriptLogo from "../../../assets/texture/typescript.jpg"
+import astroLogo from "../../../assets/texture/astro.jpg"
+import nestjsLogo from "../../../assets/texture/nestjs.jpg"
 function PhysicsSection() {
   return (
     <div className="physics-container">
@@ -15,47 +24,47 @@ function PhysicsSection() {
           <PhysicsBox
             position={[0, null, 1]}
             rad={0.8}
-            texture="/texture/react.jpg"
+            texture={reactLogo}
           />
           <PhysicsBox
             position={[1, null, -1]}
             rad={0.6}
-            texture="/texture/vite.jpg"
+            texture={viteLogo}
           />
           <PhysicsBox
             position={[-1, null, 0.5]}
             rad={0.8}
-            texture="/texture/next.jpg"
+            texture={nextLogo}
           />
           <PhysicsBox
             position={[-1, null, 0]}
             rad={0.6}
-            texture="/texture/redux.jpg"
+            texture={reduxLogo}
           />
           <PhysicsBox
             position={[1, null, 0]}
             rad={0.7}
-            texture="/texture/tailwind.jpg"
+            texture={tailwindLogo}
           />
           <PhysicsBox
             position={[-2, 1,null]}
             rad={0.7}
-            texture="/texture/sass.jpg"
+            texture={sassLogo}
           />
           <PhysicsBox
             position={[2, null, null]}
             rad={0.7}
-            texture="/texture/typescript.jpg"
+            texture={typescriptLogo}
           />
           <PhysicsBox
             position={[-2, null, -2]}
             rad={0.7}
-            texture="/texture/astro.jpg"
+            texture={astroLogo}
           />
           <PhysicsBox
             position={[2, null, -2]}
             rad={0.7}
-            texture="/texture/nestjs.jpg"
+            texture={nestjsLogo}
           />
         </Physics>
         <directionalLight intensity={5} position={[0, 0, 2]} color={"orange"} />
@@ -132,7 +141,7 @@ function Attractor() {
       vec.copy(attractorRef.current.translation()).negate().multiplyScalar(4),
     );
   });
-  const jsTexture = useTexture("/js.png");
+  const jsTexture = useTexture(jsLogo);
   return (
     <RigidBody
       type="dynamic"

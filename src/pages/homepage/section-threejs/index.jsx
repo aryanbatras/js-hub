@@ -6,6 +6,8 @@ import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./index.sass";
+import jsLogo from "../../../assets/js.png";
+import downArrow from "../../../assets/down-arrow.png";
 function SectionThreeJs({ insideMac = false }) {
   const canvasRef = useRef(),
     boxRef = useRef(),
@@ -121,7 +123,7 @@ function SectionThreeJs({ insideMac = false }) {
           </button>
           <div ref={dragRef} className="canvas__drag-indicator">
             <span>Drag me</span>
-            <img src="./down-arrow.png" alt="down-arrow" />
+            <img src={downArrow} alt="down-arrow" />
           </div>
         </>
       )}
@@ -130,7 +132,7 @@ function SectionThreeJs({ insideMac = false }) {
 }
 function MeshBox({ rotation, drag, boxRef, setReady }) {
   const speed = 0.005;
-  const jsTexture = useTexture("/js.png");
+  const jsTexture = useTexture(jsLogo);
   useFrame(() => {
     if (boxRef.current && drag === false) {
       boxRef.current.rotation.x += speed;

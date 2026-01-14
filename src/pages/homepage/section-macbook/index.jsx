@@ -6,7 +6,7 @@ import "./index.sass";
 import { OrbitControls, useGLTF, Html } from "@react-three/drei";
 import Homepage from "../index";
 import React from "react";
-import { TextureLoader } from "three";
+// import macBook from "../../../assets/mac-draco.glb"
 
 function SectionMacBook({ insideMac = false }) {
   const canvasRef = useRef(null);
@@ -99,7 +99,7 @@ function SectionMacBook({ insideMac = false }) {
           duration: 2,
         }, "-=2");
       }
-      console.log(screenFrameRef.current);
+
     }, 100);
   }, [ready]);
   return (
@@ -131,8 +131,6 @@ function MacModel({
   keyboardRef,
   screenFrameRef,
 }) {
-  // const result = useGLTF("/mac-draco.glb");
-  // console.log(result);
   const { nodes, materials } = useGLTF("/mac-draco.glb");
   useEffect(() => {
     // if (nodes) {
