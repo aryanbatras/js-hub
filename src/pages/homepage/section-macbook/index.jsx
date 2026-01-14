@@ -49,6 +49,10 @@ function SectionMacBook({ insideMac = false }) {
           },
           "-=2",
         );
+        t.to(dragRef.current, {
+          opacity: 0.75,
+          duration: 2,
+        });
         // scene 2
         t.to(modelRef.current.position, {
           z: -8,
