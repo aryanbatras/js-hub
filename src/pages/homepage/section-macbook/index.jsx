@@ -171,7 +171,12 @@ const { nodes, materials } = useGLTF(gltfPath);
   // ));
   // const jsTexture = useTexture("/mac-screen-back.png");
   return (
-    <group ref={modelRef} dispose={null}>
+    <group ref={modelRef} dispose={null}
+    onPointerEnter={() =>
+          (document.body.style.cursor = "grab")
+        }
+        onPointerLeave={() => (document.body.style.cursor = "auto")}
+    >
       <group name="Scene" position={[0, 0, -12]}>
         <group
           ref={screenFlipRef}

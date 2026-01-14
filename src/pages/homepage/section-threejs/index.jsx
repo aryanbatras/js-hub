@@ -12,8 +12,8 @@ function SectionThreeJs({ insideMac = false }) {
   const canvasRef = useRef(),
     boxRef = useRef(),
     textRef = useRef(),
-    buttonRef = useRef();
-    // dragRef = useRef();
+    buttonRef = useRef(),
+    dragRef = useRef();
   const [rotation, setRotation] = useState({ x: 0.005, y: 0.005, z: 0.005 });
   const [drag, setDrag] = useState(false);
   const [ready, setReady] = useState(false);
@@ -31,10 +31,10 @@ function SectionThreeJs({ insideMac = false }) {
           pinSpacing: true,
         },
       });
-      // t.from(dragRef.current, {
-      //   opacity: 0,
-      //   duration: 1,
-      // })
+      t.from(dragRef.current, {
+        opacity: 0,
+        duration: 1,
+      })
         t.to(boxRef.current.scale, {
           x: 0.5,
           y: 0.5,
@@ -72,7 +72,7 @@ function SectionThreeJs({ insideMac = false }) {
           {
             opacity: 1,
             scale: 1.5,
-            y: -150,
+            y: -100,
             duration: 1,
             ease: "elastic.out(1, 0.5)",
           },
@@ -88,21 +88,22 @@ function SectionThreeJs({ insideMac = false }) {
       ref={canvasRef}
     >
       <Canvas
-        // onMouseDown={() => setDrag(true)}
-        // onMouseUp={() => setDrag(false)}
-        // onMouseMove={(e) =>
-        //   drag &&
-        //   setRotation({
-        //     x: rotation.x + e.movementY * 0.0035,
-        //     y: rotation.y + e.movementX * 0.0035,
-        //     z: rotation.z,
-        //   })
-        // }
+        onMouseDown={() => setDrag(true)}
+        onMouseUp={() => setDrag(false)}
+        onMouseMove={(e) =>
+          drag &&
+          setRotation({
+            x: rotation.x + e.movementY * 0.0035,
+            y: rotation.y + e.movementX * 0.0035,
+            z: rotation.z,
+          })
+        }
       >
         <MeshBox
           boxRef={boxRef}
           rotation={rotation}
           setReady={setReady}
+          drag={drag}
         />
         <MeshSphere />
         <Light x={2} y={5} z={2} />
@@ -120,20 +121,20 @@ function SectionThreeJs({ insideMac = false }) {
           <button ref={buttonRef} className="canvas__button">
             <span>Start Learning</span> <FaArrowRight />
           </button>
-          {/* <div ref={dragRef} className="canvas__drag-indicator">
+          <div ref={dragRef} className="canvas__drag-indicator">
             <span>Drag me</span>
             <img src={downArrow} alt="down-arrow" />
-          </div> */}
+          </div>
         </>
       )}
     </div>
   );
 }
-function MeshBox({ rotation, boxRef, setReady }) {
+function MeshBox({ rotation, boxRef, setReady, drag }) {
   const speed = 0.005;
   const jsTexture = useTexture(jsLogo);
   useFrame(() => {
-    if (boxRef.current) {
+    if (boxRef.current && drag === false) {
       boxRef.current.rotation.x += speed;
       boxRef.current.rotation.y += speed;
       boxRef.current.rotation.z += speed;
@@ -148,8 +149,8 @@ function MeshBox({ rotation, boxRef, setReady }) {
     <mesh
       ref={boxRef}
       rotation={[rotation.x, rotation.y, rotation.z]}
-      // onPointerEnter={() => (document.body.style.cursor = "pointer")}
-      // onPointerLeave={() => (document.body.style.cursor = "auto")}
+      onPointerEnter={() => (document.body.style.cursor = drag ? "grabbing" : "grab")}
+      onPointerLeave={() => (document.body.style.cursor = "auto")}
     >
       <boxGeometry args={[2, 2, 2]} />
       <meshStandardMaterial color="orange" map={jsTexture} />

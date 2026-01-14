@@ -1,7 +1,7 @@
 import "./index.sass";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
@@ -144,7 +144,10 @@ function PhysicsBox({ position, rad, texture }) {
       linearDamping={1}
       angularDamping={1.5}
     >
-      <mesh>
+      <mesh
+        onPointerEnter={() => (document.body.style.cursor = "pointer")}
+        onPointerLeave={() => (document.body.style.cursor = "auto")}
+      >
         <boxGeometry args={[rad, rad, rad]} />
         <meshStandardMaterial
           color="yellow"
@@ -156,15 +159,68 @@ function PhysicsBox({ position, rad, texture }) {
   );
 }
 function Attractor() {
+  // const attractorRef = useRef();
+  // const vec = useMemo(() => new Vector3(), []);
+  // useFrame((state, delta) => {
+  //   if (!attractorRef.current) return;
+  //   delta = Math.min(0.1, delta);
+  //   attractorRef.current.applyImpulse(
+  //     vec.copy(attractorRef.current.translation()).negate().multiplyScalar(4),
+  //   );
+  // });
+
   const attractorRef = useRef();
+  const [isDragging, setIsDragging] = useState(false);
   const vec = useMemo(() => new Vector3(), []);
+
   useFrame((state, delta) => {
     if (!attractorRef.current) return;
     delta = Math.min(0.1, delta);
-    attractorRef.current.applyImpulse(
-      vec.copy(attractorRef.current.translation()).negate().multiplyScalar(4),
-    );
+
+    // Only apply centering force when not dragging
+    if (!isDragging) {
+      attractorRef.current.applyImpulse(
+        vec.copy(attractorRef.current.translation()).negate().multiplyScalar(4),
+      );
+    }
   });
+
+  const handlePointerDown = (e) => {
+    e.stopPropagation();
+    setIsDragging(true);
+    attractorRef.current.setType("kinematic");
+  };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+    if (attractorRef.current) {
+      attractorRef.current.setType("dynamic");
+    }
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging || !attractorRef.current) return;
+
+    // Convert mouse position to 3D world coordinates
+    const point = e.point;
+    attractorRef.current.setNextKinematicTranslation({
+      x: point.x,
+      y: point.y,
+      z: point.z,
+    });
+  };
+
+  useEffect(() => {
+    const handleGlobalPointerUp = () => {
+      setIsDragging(false);
+      if (attractorRef.current) {
+        attractorRef.current.setType("dynamic");
+      }
+    };
+
+    window.addEventListener("pointerup", handleGlobalPointerUp);
+    return () => window.removeEventListener("pointerup", handleGlobalPointerUp);
+  }, []);
   const jsTexture = useTexture(jsLogo);
   return (
     <RigidBody
@@ -177,7 +233,15 @@ function Attractor() {
       angularDamping={0.2}
       friction={0.2}
     >
-      <mesh>
+      <mesh
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerMove={handlePointerMove}
+        onPointerEnter={() =>
+          (document.body.style.cursor = isDragging ? "grabbing" : "grab")
+        }
+        onPointerLeave={() => (document.body.style.cursor = "auto")}
+      >
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color={"orange"} map={jsTexture} />
         <CuboidCollider args={[1, 1, 1]} />
