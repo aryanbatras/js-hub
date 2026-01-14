@@ -1,0 +1,15 @@
+* { 
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    scroll-behavior: smooth;
+    background-color: darkorange;
+}
+
+::selection {
+    background-color: #f59e0b;
+    color: white;
+}

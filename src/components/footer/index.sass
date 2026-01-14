@@ -1,0 +1,26 @@
+.footer__container
+  height: 30vh
+  width: 100vw
+  display: flex
+  align-items: center
+  justify-content: center
+  background-color: darkorange
+  color: white
+  overflow: hidden
+  position: fixed
+  bottom: 0
+  z-index: -1
+
+  .footer__text
+    font-size: 15rem
+    font-weight: lighter
+    text-transform: uppercase
+    letter-spacing: 2px
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif
+    animation: slide 30s linear infinite  
+
+@keyframes slide
+  0%
+    transform: translateX(1670px)
+  100%
+    transform: translateX(-2480px)

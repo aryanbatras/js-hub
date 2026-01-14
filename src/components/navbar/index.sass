@@ -1,0 +1,40 @@
+@mixin hover-animation
+  &:hover
+    transform: translateY(-2px)
+    transition: 0.3s ease-in-out
+    cursor: pointer
+    opacity: 0.85
+
+.navbar__container
+  display: flex
+  align-items: center
+  justify-content: space-between
+  height: 5vh
+  padding: 10px
+  background-color: lightyellow
+  color: yellow
+  width: 100vw
+  margin: 0
+
+  .navbar__jsicon
+    color: darkorange
+    // transform: rotate(10deg)
+    height: 36px
+    width: auto
+    @include hover-animation
+
+  .navbar__links
+    display: flex
+    gap: 2rem
+    a
+      display: flex
+      align-items: center
+      justify-content: center
+      gap: 0.25rem
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif
+      text-decoration: none
+      font-weight: lighter
+      font-size: 1rem
+      color: darkorange
+      @include hover-animation
+          
