@@ -2,3 +2,31 @@
     height: 100vh
     width: 100vw
     background: transparent
+    position: relative
+.physics__drag-indicator
+  span
+    position: absolute
+    top: 30%
+    left: 10%
+    transform: translate(-50%, -50%)
+    font-size: 1rem
+    font-family: 'Inter', sans-serif
+    font-weight: 400
+    letter-spacing: 0.05em
+    opacity: 0.4
+  img
+    transform: translateX(-50%) rotate(30deg)
+    position: absolute
+    left: 25%
+    top: 30%
+    height: 8vh
+    width: auto
+    opacity: 0.4
+
+@media screen and (min-width: 768px)
+  .physics__drag-indicator
+    span
+      font-size: 1.5rem
+    img
+      height: 10vh
+      left: 20%

@@ -7,6 +7,7 @@ import { OrbitControls, useGLTF, Html } from "@react-three/drei";
 import Homepage from "../index";
 import React from "react";
 // import macBook from "../../../assets/mac-draco.glb"
+import downArrow from "../../../assets/down-arrow.png";
 
 function SectionMacBook({ insideMac = false }) {
   const canvasRef = useRef(null);
@@ -15,6 +16,7 @@ function SectionMacBook({ insideMac = false }) {
   const screenRef = useRef(null);
   const keyboardRef = useRef(null);
   const screenFrameRef = useRef(null);
+  const dragRef = useRef(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     setTimeout(() => {
@@ -93,13 +95,16 @@ function SectionMacBook({ insideMac = false }) {
           x: 3,
           duration: 2,
         });
-        t.to(screenFrameRef.current.rotation, {
-          y: -0.1,
-          x: -0.2,
-          duration: 2,
-        }, "-=2");
+        t.to(
+          screenFrameRef.current.rotation,
+          {
+            y: -0.1,
+            x: -0.2,
+            duration: 2,
+          },
+          "-=2",
+        );
       }
-
     }, 100);
   }, [ready]);
   return (
@@ -120,6 +125,10 @@ function SectionMacBook({ insideMac = false }) {
         />
         <OrbitControls enableZoom={false} enablePan={false} />
       </Canvas>
+      <div ref={dragRef} className="macbook__drag-indicator">
+        <span>Scroll my screen</span>
+        <img src={downArrow} alt="down-arrow" />
+      </div>
     </div>
   );
 }
@@ -131,10 +140,12 @@ function MacModel({
   keyboardRef,
   screenFrameRef,
 }) {
-
-// In section-macbook/index.jsx:
-const gltfPath = process.env.NODE_ENV === 'production' ? '/js-hub/mac-draco.glb' : '/mac-draco.glb';
-const { nodes, materials } = useGLTF(gltfPath);
+  // In section-macbook/index.jsx:
+  const gltfPath =
+    process.env.NODE_ENV === "production"
+      ? "/js-hub/mac-draco.glb"
+      : "/mac-draco.glb";
+  const { nodes, materials } = useGLTF(gltfPath);
   // const { nodes, materials } = useGLTF("/mac-draco.glb");
   useEffect(() => {
     // if (nodes) {
@@ -171,11 +182,11 @@ const { nodes, materials } = useGLTF(gltfPath);
   // ));
   // const jsTexture = useTexture("/mac-screen-back.png");
   return (
-    <group ref={modelRef} dispose={null}
-    onPointerEnter={() =>
-          (document.body.style.cursor = "grab")
-        }
-        onPointerLeave={() => (document.body.style.cursor = "auto")}
+    <group
+      ref={modelRef}
+      dispose={null}
+      onPointerEnter={() => (document.body.style.cursor = "grab")}
+      onPointerLeave={() => (document.body.style.cursor = "auto")}
     >
       <group name="Scene" position={[0, 0, -12]}>
         <group

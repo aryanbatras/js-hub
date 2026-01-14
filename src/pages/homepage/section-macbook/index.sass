@@ -14,3 +14,32 @@
     width: 330px
     height: 214px
     transform-origin: top left
+
+.macbook__drag-indicator
+  span
+    position: absolute
+    top: 10%
+    // left: 10%
+    right: 0%
+    transform: translate(-50%, -50%)
+    font-size: 1rem
+    font-family: 'Inter', sans-serif
+    font-weight: 400
+    letter-spacing: 0.05em
+    opacity: 0.4
+  img
+    transform: translateX(-50%) rotate(90deg)
+    position: absolute
+    right: 5%
+    top: 13%
+    height: 8vh
+    width: auto
+    opacity: 0.4
+@media screen and (min-width: 768px)
+  .macbook__drag-indicator
+    span
+      font-size: 1.5rem
+    img
+      height: 10vh
+      transform: translateX(-50%) rotate(120deg)
+      right: 8%

@@ -15,10 +15,12 @@ import sassLogo from "../../../assets/texture/sass.jpg";
 import typescriptLogo from "../../../assets/texture/typescript.jpg";
 import astroLogo from "../../../assets/texture/astro.jpg";
 import nestjsLogo from "../../../assets/texture/nestjs.jpg";
+import downArrow from "../../../assets/down-arrow.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 function PhysicsSection({ physics, showPhysics }) {
   const physicsRef = useRef(null);
+  const dragRef = useRef();
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const t2 = gsap.timeline({
@@ -95,6 +97,10 @@ function PhysicsSection({ physics, showPhysics }) {
           <Light x={0} y={0} z={5} />
         </Canvas>
       )}
+      <div ref={dragRef} className="physics__drag-indicator">
+        <span>Hold me</span>
+        <img src={downArrow} alt="down-arrow" />
+      </div>
     </div>
   );
 }
