@@ -19,6 +19,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug - Start
+        run: echo "Starting build job"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -28,13 +31,36 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Debug - Node and NPM versions
+        run: |
+          node -v
+          npm -v
+
       - name: Install dependencies
         run: npm ci
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
+
+      - name: Debug - Installed packages
+        run: npm list --depth=0
 
       - name: Build
         run: |
+          echo "Building application..."
           npm run build
+          echo "Build completed. Directory structure:"
+          ls -la dist/
+          echo "Checking if index.html exists:"
+          ls -la dist/index.html || echo "index.html not found!"
           touch ./dist/.nojekyll
+
+      - name: Verify build output
+        run: |
+          echo "Build output verification:"
+          find ./dist -type f -name "*.js" | head -5
+          find ./dist -type f -name "*.css" | head -5
+          echo "Total files in dist:"
+          find ./dist -type f | wc -l
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -56,3 +82,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Debug - Deployment URL
+        run: |
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
